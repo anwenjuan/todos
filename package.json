@@ -16,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/anwenjuan/todos/issues"
   },
-  "homepage": "https://github.com/anwenjuan/todos#readme"
+  "homepage": "https://github.com/anwenjuan/todos#readme",
+  "dependencies": {
+    "angular": "^1.6.7",
+    "install": "^0.10.4"
+  }
 }
