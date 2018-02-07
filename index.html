@@ -15,7 +15,7 @@
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
 			<section class="main">
-				<input class="toggle-all" type="checkbox">
+				<input class="toggle-all" type="checkbox" ng-click="toggleAll()" ng-model="status">
 				<label for="toggle-all">Mark all as complete</label>
 				<ul class="todo-list">
 					<!-- These are here just to show the structure of the list items -->
@@ -28,20 +28,22 @@
 						</div>
 						<input class="edit" value="Create a TodoMVC template">
 					</li> -->
-					<li ng-repeat="item in taskList" ng-class="{'completed':item.isCompleted}">
+					<li ng-repeat="item in taskList" ng-class="{'completed':item.isCompleted,'editing':item.isEditing}">
 						<div class="view">
-							<input class="toggle" type="checkbox" ng-model="item.isCompleted">
-							<label ng-bind="item.name"></label>
+							<input class="toggle" type="checkbox" ng-model="item.isCompleted"  ng-click="chooseState()">
+							<label ng-bind="item.name" ng-dblclick="editTask(item,$event)"></label>
 							<button class="destroy" ng-click="delTask($index)"></button>
 						</div>
-						<input class="edit" value="Rule the web">
+						<form>
+							<input class="edit" value="Rule the web" ng-model="item.name" ng-blur="cancleEdit(item)">
+						</form>
 					</li>
 				</ul>
 			</section>
 			<!-- This footer should hidden by default and shown when there are todos -->
 			<footer class="footer">
 				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong>0</strong> item left</span>
+				<span class="todo-count"><strong>{{ uncompletedNum() }}</strong> item left</span>
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
@@ -55,7 +57,7 @@
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed">Clear completed</button>
+				<button class="clear-completed" ng-click="clearCompleted()">Clear completed</button>
 			</footer>
 		</section>
 		<footer class="info">
