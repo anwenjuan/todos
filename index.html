@@ -10,7 +10,7 @@
 	<body ng-app="app" ng-controller="todosCtrl">
 		<section class="todoapp">
 			<header class="header">
-				<h1>todos</h1>
+				<h1>备忘录</h1>
 				<input class="new-todo" placeholder="新增事项（按回车添加）" autofocus ng-model="inp_task" ng-keypress="addTask($event)">
 			</header>
 			<!-- This section should be hidden by default and shown when there are todos -->
@@ -28,7 +28,7 @@
 						</div>
 						<input class="edit" value="Create a TodoMVC template">
 					</li> -->
-					<li ng-repeat="item in taskList" ng-class="{'completed':item.isCompleted,'editing':item.isEditing}">
+					<li ng-repeat="item in taskList | filter: {isCompleted : condition }" ng-class="{'completed':item.isCompleted,'editing':item.isEditing}">
 						<div class="view">
 							<input class="toggle" type="checkbox" ng-model="item.isCompleted"  ng-click="chooseState()">
 							<label ng-bind="item.name" ng-dblclick="editTask(item,$event)"></label>
@@ -43,30 +43,25 @@
 			<!-- This footer should hidden by default and shown when there are todos -->
 			<footer class="footer">
 				<!-- This should be `0 items left` by default -->
-				<span class="todo-count"><strong>{{ uncompletedNum() }}</strong> item left</span>
+				<span class="todo-count"><strong>{{ uncompletedNum() }}</strong> 项剩余</span>
 				<!-- Remove this if you don't implement routing -->
 				<ul class="filters">
 					<li>
-						<a class="selected" href="#/">All</a>
+						<a ng-class="{'selected' : condition === ''}" href="javascript:;" ng-click="filterTask('all')">全部</a>
 					</li>
 					<li>
-						<a href="#/active">Active</a>
+						<a ng-class="{'selected' : condition === false}" href="javascript:;" ng-click="filterTask('active')">未完成</a>
 					</li>
 					<li>
-						<a href="#/completed">Completed</a>
+						<a ng-class="{'selected' : condition === true}" href="javascript:;" ng-click="filterTask('completed')">已完成</a>
 					</li>
 				</ul>
 				<!-- Hidden if no completed items are left ↓ -->
-				<button class="clear-completed" ng-click="clearCompleted()">Clear completed</button>
+				<button class="clear-completed" ng-click="clearCompleted()">删除已完成</button>
 			</footer>
 		</section>
 		<footer class="info">
-			<p>Double-click to edit a todo</p>
-			<!-- Remove the below line ↓ -->
-			<p>Template by <a href="http://sindresorhus.com">Sindre Sorhus</a></p>
-			<!-- Change this out with your name and url ↓ -->
-			<p>Created by <a href="http://todomvc.com">you</a></p>
-			<p>Part of <a href="http://todomvc.com">TodoMVC</a></p>
+			<p>双击编辑事项</p>
 		</footer>
 
 		<script src="./node_modules/angular/angular.min.js"></script>

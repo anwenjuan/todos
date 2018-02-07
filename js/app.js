@@ -1,6 +1,9 @@
 angular.module('app',[])
 .controller('todosCtrl',['$scope',function($scope){
     $scope.taskList=[];
+    if(localStorage.getItem('localList')){
+        $scope.taskList = angular.fromJson(localStorage.getItem('localList'))
+    }
     $scope.addTask = function(event){
         if(event.keyCode === 13){
             if($scope.inp_task){
@@ -9,6 +12,7 @@ angular.module('app',[])
                     isCompleted: false,
                     isEditing:false
                 });
+                $scope.chooseState()
                 $scope.inp_task = '';
             }
         }
@@ -61,4 +65,23 @@ angular.module('app',[])
     $scope.cancleEdit = function(item){
         item.isEditing = false;
     }
+
+    $scope.condition = '';
+    $scope.filterTask = function(type){
+        switch(type){   
+        case 'all':
+            $scope.condition = '';
+            break;
+        case 'active':
+            $scope.condition = false;
+            break;
+        case 'completed':
+            $scope.condition = true;
+            break;
+        }
+    }
+
+    $scope.$watch('taskList',function(){
+        localStorage.setItem('localList',angular.toJson($scope.taskList));
+    },true) //复杂数据类型要深度监控
 }])
